@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: gabagool-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - gabagool-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gabagool-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - POLYMARKET_API_KEY=${POLYMARKET_API_KEY}
+      - POLYMARKET_API_SECRET=${POLYMARKET_API_SECRET}
+      - PRIVATE_KEY=${PRIVATE_KEY}
+      - MAX_UNHEDGED_DELTA=${MAX_UNHEDGED_DELTA:-100}
+      - PROFIT_MARGIN=${PROFIT_MARGIN:-0.02}
+      - SETTLEMENT_BUFFER_SECONDS=${SETTLEMENT_BUFFER_SECONDS:-300}
+      - TARGET_ROI=${TARGET_ROI:-0.05}
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - gabagool-network
+    restart: unless-stopped
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+    container_name: gabagool-dashboard
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./dashboard:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NODE_ENV=development
+    depends_on:
+      - backend
+    networks:
+      - gabagool-network
+    restart: unless-stopped
+
+networks:
+  gabagool-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - gabagool-network
+
+  backend:
+    # Replace with your backend service configuration
+    # This is a placeholder - update with actual backend details
+    image: gabagool-backend:latest
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - gabagool-network
+
+networks:
+  gabagool-network:
+    driver: bridge

@@ -1,0 +1,107 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                        GABAGOOL VOLATILITY ARBITRAGE                          ║
+║                                                                         [Live]║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                  SCOREBOARD                                   ║
+║ ┌──────────────────────┬──────────────┬──────────────┬──────────────────────┐ ║
+║ │ CURRENT MARKET       │ TIME         │ PAIR COST    │ LOCKED PROFIT        │ ║
+║ │ BTC > 90k @ 16:00    │ REMAINING    │              │                      │ ║
+║ │ YES: $0.485          │ 2h 34m 12s   │   $0.9850    │     $123.45          │ ║
+║ │ NO:  $0.500          │              │              │     24 pairs         │ ║
+║ └──────────────────────┴──────────────┴──────────────┴──────────────────────┘ ║
+║                                                                               ║
+║ DELTA EXPOSURE: [█████████████▓▓▓▓▓▓▓] 65% YES vs 35% NO   Δ: 15.2          ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                              RISK STATUS                                      ║
+║ ┌──────────┬──────────┬──────────┬──────────┐                                ║
+║ │  DELTA   │ LIQUIDITY│   API    │  BUFFER  │                                ║
+║ │  ✓ Safe  │ ✓ Good   │ ● Conn   │  45 min  │                                ║
+║ └──────────┴──────────┴──────────┴──────────┘                                ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                   CHARTS                                      ║
+║ ┌────────────────────────────────────┬────────────────────────────────────┐  ║
+║ │ ACCUMULATION CHART                 │ EXPOSURE CHART                     │  ║
+║ │                                    │                                    │  ║
+║ │  Shares                            │  USDC                              │  ║
+║ │    │                               │    │                               │  ║
+║ │ 40 │     ╱╲  ╱─╲                   │500 │        ╱────                  │  ║
+║ │ 30 │   ╱─  ╲╱   ─╲  YES            │400 │      ╱────── Payout           │  ║
+║ │ 20 │ ╱─          ╲╱╲ NO            │300 │    ╱──────── Cost             │  ║
+║ │ 10 │╱                ─              │200 │  ╱──────────                  │  ║
+║ │  0 └──────────────────────Time     │100 └╱────────────────Time          │  ║
+║ │                                    │   (Shaded area = Locked Profit)   │  ║
+║ └────────────────────────────────────┴────────────────────────────────────┘  ║
+║ ┌────────────────────────────────────┬────────────────────────────────────┐  ║
+║ │ ARBITRAGE CHANNEL                  │ ORDER BOOK                         │  ║
+║ │                                    │                                    │  ║
+║ │ Sum │                              │ YES MARKET   │   NO MARKET         │  ║
+║ │1.02 │         ──                   │ ┌─────────┐  │  ┌─────────┐       │  ║
+║ │1.00 ├─────────────── Fair Value    │ │0.492 25 │  │  │0.518 30 │ Asks  │  ║
+║ │0.98 │    ▀▀▀▀▀                     │ │0.490 40 │  │  │0.515 45 │       │  ║
+║ │0.96 │ ▀▀▀     BUY ZONE              │ ├─────────┤  │  ├─────────┤       │  ║
+║ │0.94 └──────────────────────Time    │ │ Spread  │  │  │ Spread  │       │  ║
+║ │                                    │ ├─────────┤  │  ├─────────┤       │  ║
+║ │ Green = Buy Zone (< $1.00)         │ │0.485 35 │  │  │0.500 50 │ Bids  │  ║
+║ │ Blue = Above Fair Value            │ │0.483 20 │  │  │0.498 25 │       │  ║
+║ └────────────────────────────────────┴─┴─────────┴──┴──┴─────────┴────────┘  ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                                TRADE LEDGER                                   ║
+║ ┌───────────┬──────┬─────────┬──────┬─────────┬─────────────┐                ║
+║ │ Time      │ Side │ Price   │ Qty  │ Cost    │ Pair Cost   │                ║
+║ ├───────────┼──────┼─────────┼──────┼─────────┼─────────────┤                ║
+║ │ 14:23:45  │ ▲YES │ 0.4850  │ 5.00 │  $2.43  │   $0.9850   │                ║
+║ │ 14:23:42  │ ▼NO  │ 0.5000  │ 5.00 │  $2.50  │   $0.9850   │                ║
+║ │ 14:23:38  │ ▲YES │ 0.4820  │ 3.00 │  $1.45  │   $0.9820   │                ║
+║ │ 14:23:35  │ ▼NO  │ 0.5050  │ 3.00 │  $1.52  │   $0.9870   │                ║
+║ │ 14:23:31  │ ▲YES │ 0.4800  │ 4.00 │  $1.92  │   $0.9800   │                ║
+║ │ ...       │ ...  │ ...     │ ...  │ ...     │   ...       │                ║
+║ └───────────┴──────┴─────────┴──────┴─────────┴─────────────┘                ║
+║                      (Showing last 20 executions)                             ║
+╠═══════════════════════════════════════════════════════════════════════════════╣
+║                               CONTROL PANEL                                   ║
+║ ┌──────────────────┬──────────────────────┬──────────────────────────────┐   ║
+║ │ BOT STATUS       │ ACCUMULATION         │ QUICK ACTIONS                │   ║
+║ │ ● ACTIVE         │ ● RUNNING            │ [ ⏸ HALT ]                   │   ║
+║ └──────────────────┴──────────────────────┴──────────────────────────────┘   ║
+║                                                                               ║
+║ ⚠ EMERGENCY CONTROLS                                                          ║
+║ ┌─────────────────────────────────┬─────────────────────────────────────┐    ║
+║ │  [🛑 PANIC - CLOSE ALL]         │ Warning: Emergency controls will    │    ║
+║ │                                 │ execute market orders immediately.  │    ║
+║ │                                 │ Use only in critical situations.    │    ║
+║ └─────────────────────────────────┴─────────────────────────────────────┘    ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+VISUAL LEGEND:
+═══ Borders and sections
+▲   YES trade (green)
+▼   NO trade (red)
+●   Status indicator (animated pulse)
+█▓  Progress/gauge bars
+╱   Chart lines
+▀   Area fills
+✓   Checkmark (good status)
+⚠   Warning icon
+🛑  Emergency/danger
+⏸   Pause/halt
+▶   Play/resume
+
+COLOR CODING (in actual dashboard):
+🟢 GREEN  - Profit, YES trades, Safe status, Below $0.99
+🔴 RED    - Loss, NO trades, Danger status, Above $1.00
+🟡 YELLOW - Warning, Breakeven, $0.99-$1.00
+🔵 BLUE   - Info, Guaranteed payout, Connections
+⚪ GRAY   - Neutral, Inactive, Background
+
+INTERACTIVE ELEMENTS:
+• All charts support hover tooltips
+• Trade ledger auto-scrolls to newest
+• Control buttons have confirmation modals
+• WebSocket connection indicator in header
+• Real-time updates via WebSocket
+• 5-second polling fallback
+
+RESPONSIVE BEHAVIOR:
+Desktop (>1024px): 2-column chart grid
+Tablet (768-1024px): 2-column chart grid
+Mobile (<768px): Single column stack

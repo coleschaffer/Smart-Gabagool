@@ -1,0 +1,67 @@
+# Render Blueprint for Gabagool Volatility Arbitrage Bot
+# Deploy all services with: render blueprint sync
+
+services:
+  # Backend API Service (Python/FastAPI)
+  - type: web
+    name: gabagool-backend
+    runtime: python
+    region: ohio  # US-East for low latency to Polygon
+    plan: starter
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m src.main
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: gabagool-redis
+          property: connectionString
+      - key: POLYMARKET_API_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: POLYMARKET_API_SECRET
+        sync: false
+      - key: PRIVATE_KEY
+        sync: false
+      - key: MAX_UNHEDGED_DELTA
+        value: "50"
+      - key: PROFIT_MARGIN
+        value: "0.02"
+      - key: SETTLEMENT_BUFFER_SECONDS
+        value: "120"
+      - key: TARGET_ROI
+        value: "10.0"
+      - key: LOG_LEVEL
+        value: "INFO"
+      - key: DASHBOARD_PORT
+        value: "8000"
+
+  # Frontend Dashboard (Next.js)
+  - type: web
+    name: gabagool-dashboard
+    runtime: node
+    region: ohio
+    plan: starter
+    rootDir: dashboard
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: gabagool-backend
+          property: url
+      - key: NODE_ENV
+        value: "production"
+
+# Redis for state management
+databases:
+  - name: gabagool-redis
+    plan: starter  # 25MB, good for state storage
+    region: ohio
+    ipAllowList: []  # Only internal access
