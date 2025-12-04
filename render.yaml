@@ -52,15 +52,16 @@ services:
       - key: NODE_VERSION
         value: "20"
       - key: NEXT_PUBLIC_API_URL
-        # Will be auto-set to backend URL after first deploy
+        # Set manually after backend deploys
         # Format: https://gabagool-backend.onrender.com
         sync: false
       - key: NODE_ENV
         value: "production"
 
-# Redis for state management
-databases:
-  - name: gabagool-redis
-    plan: starter  # 25MB, good for state storage
+  # Redis for state management
+  - type: redis
+    name: gabagool-redis
+    plan: free  # 25MB, good for state storage
     region: ohio
+    maxmemoryPolicy: allkeys-lru
     ipAllowList: []  # Only internal access
