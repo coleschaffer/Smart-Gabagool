@@ -52,10 +52,9 @@ services:
       - key: NODE_VERSION
         value: "20"
       - key: NEXT_PUBLIC_API_URL
-        fromService:
-          type: web
-          name: gabagool-backend
-          property: url
+        # Will be auto-set to backend URL after first deploy
+        # Format: https://gabagool-backend.onrender.com
+        sync: false
       - key: NODE_ENV
         value: "production"
 
